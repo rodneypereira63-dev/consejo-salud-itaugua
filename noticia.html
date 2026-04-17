@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noticias - Salud Itauguá</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header>
+  <nav class="navbar">
+    <div class="logo-area">
+      <img src="img/logo.png" alt="Logo" class="logo-img">
+      <h1>Salud Itauguá</h1>
+    </div>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="noticias.html">Noticias</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div id="detalle-noticia"></div>
+
+<footer>
+  <p>Consejo Local de Salud Itauguá</p>
+</footer>
+
+<script>
+fetch('data/noticias.json')
+  .then(res => res.json())
+  .then(data => {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+    const noticia = data.find(n => n.id == id);
+
+    if (noticia) {
+      document.getElementById("detalle-noticia").innerHTML = `
+        <article style="max-width: 900px; margin: 40px auto; padding: 30px; background: white; border-radius: 15px; shadow: 0 5px 15px rgba(0,0,0,0.1)">
+          <a href="noticias.html" style="color: var(--verde-medico); text-decoration: none; font-weight: bold;">← Volver a Noticias</a>
+          <h1 style="font-size: 2.5rem; color: var(--verde-medico); margin: 20px 0;">${noticia.titulo}</h1>
+          <p style="color: #666; font-style: italic; margin-bottom: 20px;">Publicado el: ${noticia.fecha}</p>
+          <img src="${noticia.imagen}" style="width: 100%; height: auto; border-radius: 10px; margin-bottom: 30px;">
+          <div style="font-size: 1.2rem; line-height: 1.8; color: #333;">
+            ${noticia.contenido}
+          </div>
+        </article>
+      `;
+    }
+  });
+</script>
+
+</body>
+</html>
